@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useEffect, useState } from "react";
+import api from "./api";
 
 function App() {
+  const [Navbar, setNavbar] = useState("");
+  const [footer, setfooter] = useState("");
+  useEffect(() => {
+    api
+      .get("/users/getNavbar")
+      .then((resp) => {
+        setNavbar(resp.data);
+      })
+      .catch((err) => {});
+    api
+      .get("/users/getFooter")
+      .then((resp) => {
+        setfooter(resp.data);
+      })
+      .catch((err) => {});
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div dangerouslySetInnerHTML={{ __html: Navbar }}></div>
+      <div dangerouslySetInnerHTML={{ __html: footer }}></div>
     </div>
   );
 }
